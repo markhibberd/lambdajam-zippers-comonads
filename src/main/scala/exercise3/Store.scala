@@ -10,7 +10,7 @@ case class Store[A, B](set: A => B, get: A) {
   Map a functor over a Store[A, _].
   */
   def map[C](f: B => C): Store[A, C] =
-    ???
+    Store(f compose set, get)
 
   /*
   Exercise 32
@@ -18,7 +18,7 @@ case class Store[A, B](set: A => B, get: A) {
   Duplicate a Store[A, _].
   */
   def cojoin: Store[A, Store[A, B]] =
-    ???
+    Store(r => Store(set, r), get)
 
   /*
   Exercise 33
@@ -26,7 +26,7 @@ case class Store[A, B](set: A => B, get: A) {
   Implement the identity operation for `cojoin`.
   */
   def copoint: B =
-    ???
+    set(get)
 
   /*
   Exercise 34
@@ -34,7 +34,7 @@ case class Store[A, B](set: A => B, get: A) {
   Implement a cross-product of Store.
   */
   def product[C, D](s: Store[C, D]): Store[(A, C), (B, D)] =
-    ???
+    Store(ac => (set(ac._1), s.set(ac._2)), (get, s.get))
 }
 
 object Store {
@@ -48,5 +48,18 @@ object Store {
   Instantiate the comonad instance for Store[X, _]
   */
   implicit def StoreComonad[X]: Comonad[Store_[X]#l] =
-    ???
+    new Comonad[Store_[X]#l] {
+      def map[A, B](f: A => B) =
+        _ map f
+
+      def copoint[A](x: Store[X, A]) =
+        x.copoint
+
+      def cobind[A, B](f: Store[X, A] => B) =
+        _.cojoin map f
+
+      def cojoin[A](x: Store[X, A]) =
+        x.cojoin
+
+    }
 }

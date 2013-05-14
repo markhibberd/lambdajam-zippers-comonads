@@ -23,7 +23,7 @@ trait SemiComonad[F[_]] extends Functor[F] {
   ~~~ List all primitives of SemiComonad, except for cobind/extend
   */
   def cobindExercise[A, B](f: F[A] => B): F[A] => F[B] =
-    ???
+    a => map(f)(cojoin(a))
 
   /*
   Exercise 2
@@ -38,7 +38,7 @@ trait SemiComonad[F[_]] extends Functor[F] {
   ~~~ Use of cobind/extend is necessary
   */
   def cojoinExercise[A](fa: F[A]): F[F[A]] =
-    ???
+    cobind(identity[F[A]])(fa)
 }
 
 object SemiComonad {
@@ -48,12 +48,15 @@ object SemiComonad {
   def OptionSemiComonad: SemiComonad[Option] =
     new SemiComonad[Option] {
       /*
-      Exercise 2
+      Exercise 4
       ----------
       The Option semi-comonad duplicates all non-empty (Some) elements.
       */
       def cojoin[A](fa: Option[A]) =
-        ???
+        fa match {
+          case None => None
+          case Some(_) => Some(fa)
+        }
 
       def map[A, B](f: A => B) =
         _ map f
@@ -70,7 +73,10 @@ object SemiComonad {
       The List semi-comonad returns all non-empty tails of the given list.
       */
       def cojoin[A](fa: List[A]) =
-        ???
+        fa match {
+          case Nil => Nil
+          case _::t => fa :: cojoin(t)
+        }
 
       def map[A, B](f: A => B) =
         _ map f
@@ -90,7 +96,8 @@ object SemiComonad {
     (F[B] => C) => (F[A] => B) => (F[A] => C)
   */
   def compose[F[_], A, B, C](f: F[B] => C, g: F[A] => B)(implicit F: Comonad[F]): F[A] => C =
-    ???
+    x =>
+      f(F.cobind(g)(x))
 }
 
 object SemiComonadLaws {

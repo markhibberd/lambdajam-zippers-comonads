@@ -1,4 +1,4 @@
-name := "introduction-to-fp-in-scala"
+name := "zippers-and-comonads"
 
 scalaVersion := "2.10.1"
 
