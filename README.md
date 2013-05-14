@@ -48,9 +48,8 @@ For either platform this may take a few minutes. It will:
  3. Compile the main and test source code.
  4. Run the tests.
 
-
-You should see green output, no errors and, an exit code of 0.
-
+You should see a successful compilation. The tests will
+fail until you complete the exercises during the workshop :)
 
 ## Working with scala.
 
@@ -69,3 +68,15 @@ You can generate project files for eclipse with:
 Just note that if you choose eclipse or intellij, have a
 backup texteditor as well, because there won't be enough
 time to debug any editor issues.
+
+
+## Notes
+
+There are 35 exercises in total.
+
+ 1. src/main/scala/exercise1/Comonad.scala
+ 2. src/main/scala/exercise2/Zipper.scala
+ 3. src/main/scala/exercise3/Store.scala
+
+There are test to help validate, but make
+sure you use the _types_ to guide you.

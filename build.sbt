@@ -12,3 +12,12 @@ resolvers ++= Seq(
   "oss snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
   "oss releases" at "http://oss.sonatype.org/content/repositories/releases"
 )
+
+scalacOptions ++= Seq(
+  "-deprecation",
+  "-unchecked",
+  "-feature",
+  "-language:implicitConversions",
+  "-language:higherKinds",
+  "-language:postfixOps"
+)
